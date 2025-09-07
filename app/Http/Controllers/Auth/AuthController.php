@@ -29,6 +29,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'address' => $request->address,
             'phone' => $request->phone,
+            'role' => 'User',
         ]);
         return redirect()->route('auth.login.store')->with('success', 'Đăng ký thành công');
     }
@@ -46,7 +47,13 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended('/');
+
+        
+            if (Auth::user()->role === 'Admin') {
+                return redirect()->intended('/admin');  // Admin panel
+            } else {
+                return redirect()->intended('/');       // Client home
+            }
         }
 
         return back()->withErrors(['email' => 'Thông tin đăng nhập không đúng.'])->onlyInput('email');
