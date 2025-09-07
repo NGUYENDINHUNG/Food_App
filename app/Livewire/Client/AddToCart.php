@@ -62,6 +62,6 @@ class AddToCart extends Component
 
     public function render()
     {
-        return view('livewire.client.carts.add-to-cart');
+        return view('client.categories.add-to-cart');
     }
 }

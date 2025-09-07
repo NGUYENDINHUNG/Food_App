@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Food;
+use App\Models\OrderDetail;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -13,7 +14,7 @@ use Livewire\Features\SupportFileUploads\WithFileUploads;
 class FoodManagement extends Component
 {
     use WithFileUploads;
-    public $name, $description, $image, $price, $category_id, $editId, $quantity;
+    public $name, $description, $image, $price, $category_id, $editId, $quantity, $currentImage;
     public $showModal = false;
     protected function rules()
     {
@@ -30,22 +31,22 @@ class FoodManagement extends Component
     {
         $this->validate();
 
-        $imageUrl = null;
-
-        if ($this->image) {
-            $path = $this->image->store('foods', 'public');
-            $imageUrl = '/storage/' . $path;
-        }
 
         $data = [
             'name' => $this->name,
             'slug' => Str::slug($this->name),
             'description' => $this->description,
-            'image' => $imageUrl,
             'price' => $this->price,
             'category_id' => $this->category_id,
             'quantity' => $this->quantity,
         ];
+
+        if ($this->image) {
+            $path = $this->image->store('foods', 'public');
+            $data['image'] = '/storage/' . $path;
+        } elseif ($this->editId) {
+            $data['image'] = $this->currentImage;
+        }
 
         if ($this->editId) {
             Food::findOrFail($this->editId)->update($data);
@@ -60,13 +61,26 @@ class FoodManagement extends Component
 
     public function delete($id)
     {
-        $food = Food::findOrFail($id);
-        if ($food->image) {
-            $filePath = str_replace('/storage/', '', $food->image);
-            Storage::disk('public')->delete($filePath);
+        try {
+            $food = Food::findOrFail($id);
+
+            $orderDetailsCount = OrderDetail::where('food_id', $id)->count();
+
+            if ($orderDetailsCount > 0) {
+                session()->flash('error', 'Không thể xóa món ăn này vì đã có đơn hàng sử dụng. Vui lòng xóa các đơn hàng liên quan trước.');
+                return;
+            }
+
+            if ($food->image) {
+                $filePath = str_replace('/storage/', '', $food->image);
+                Storage::disk('public')->delete($filePath);
+            }
+
+            $food->delete();
+            session()->flash('success', 'Xóa thành công!');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Có lỗi xảy ra khi xóa món ăn: ' . $e->getMessage());
         }
-        $food->delete();
-        session()->flash('success', 'Xóa thành công!');
     }
 
     public function create()
@@ -84,16 +98,18 @@ class FoodManagement extends Component
         $this->price = $food->price;
         $this->category_id = $food->category_id;
         $this->quantity = $food->quantity;
+        $this->currentImage = $food->image;
+        $this->image = null;
         $this->showModal = true;
     }
 
     public function resetForm()
     {
-        $this->reset(['name', 'description', 'image', 'editId', 'showModal', 'quantity']);
+        $this->reset(['name', 'description', 'image', 'editId', 'showModal', 'quantity', 'currentImage']);
     }
     public function render()
     {
         $foods = Food::latest()->get();
-        return view('livewire.admin.foods.index', compact('foods'));
+        return view('admin.foods.index', compact('foods'));
     }
 }

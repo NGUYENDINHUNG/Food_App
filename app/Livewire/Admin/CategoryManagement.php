@@ -37,9 +37,11 @@ class CategoryManagement extends Component
             'description' => $this->description,
         ];
 
-        if ($this->image) {
+         if ($this->image) {
             $path = $this->image->store('categories', 'public');
             $data['image'] = '/storage/' . $path;
+        } elseif ($this->editingId) {
+            $data['image'] = $this->currentImage;
         }
 
         if ($this->editingId) {
@@ -91,6 +93,6 @@ class CategoryManagement extends Component
     public function render()
     {
         $categories = Category::latest()->get();
-        return view('livewire.admin.categories.index', compact('categories'));
+        return view('admin.categories.index', compact('categories'));
     }
 }

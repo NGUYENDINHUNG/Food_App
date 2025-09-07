@@ -15,7 +15,7 @@
         <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav mx-auto gap-3">
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('home') ? 'active fw-semibold' : '' }}"
+                    <a class="nav-link"
                         href="{{ route('home') }}">Trang chủ</a>
                 </li>
                 <li class="nav-item">
@@ -28,21 +28,23 @@
 
             <!-- Khu vực bên phải -->
             <div class="d-flex align-items-center gap-3">
-                <!-- Tìm kiếm -->
-                <a href="#" class="btn btn-outline-secondary btn-sm" aria-label="Tìm kiếm">
-                    <i class="bi bi-search"></i>
-                </a>
-
                 <!-- Giỏ hàng -->
                 <a href="{{ route('cart.index') }}" class="btn btn-outline-secondary btn-sm position-relative"
                     aria-label="Giỏ hàng">
                     <i class="bi bi-bag"></i>
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        @if (session('cart'))
-                            {{ count(session('cart')->cartDetails) }}
-                        @else
-                            0
-                        @endif
+                        @php
+                            $count = 0;
+                            if (Auth::check()) {
+                                $count =
+                                    optional(
+                                        \App\Models\Cart::withCount('cartDetails')
+                                            ->where('user_id', Auth::id())
+                                            ->first(),
+                                    )->cart_details_count ?? 0;
+                            }
+                        @endphp
+                        {{ $count }}
                     </span>
                 </a>
 
@@ -55,8 +57,6 @@
                     <div class="dropdown">
                         <a class="btn btn-light btn-sm dropdown-toggle d-flex align-items-center gap-2" href="#"
                             role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{{ asset('assets/profile_icon.png') }}" width="28" class="rounded-circle"
-                                alt="Tài khoản" />
                             <span class="d-none d-sm-inline">{{ Str::limit(Auth::user()->name, 16) }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm">
