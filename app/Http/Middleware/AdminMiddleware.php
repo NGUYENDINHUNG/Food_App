@@ -3,22 +3,24 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdminMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next): Response|RedirectResponse
     {
-        if (!Auth::check() || !Auth::user()->isadmin) {
-            abort(403,'bạn không có quyền truy cập');
+        if (!Auth::check()) {
+            return redirect()->route('auth.login')->with('error', 'Vui lòng đăng nhập');
         }
+
+        if (Auth::user()->role !== 'Admin') {
+            abort(403, 'Bạn không có quyền truy cập');
+            return redirect()->route('auth.login')->with('error', 'Vui lòng đăng nhập');
+        }
+
         return $next($request);
     }
 }
