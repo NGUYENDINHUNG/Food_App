@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Livewire\Admin\CategoryManagement;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\FoodManagement;
+use App\Livewire\Admin\OrderManagement;
 use App\Livewire\Client\CartComponent;
 use App\Livewire\Client\OrderComponent;
 use App\Livewire\Client\OrderHistoryComponent;
@@ -36,10 +37,10 @@ Route::prefix('/')->group(function () {
     });
 });
 
-
 //admin
 Route::prefix('admin')->middleware('admin')->name('admin.')->group(function () {
     Route::get('/', Dashboard::class)->name('dashboard');
     Route::get('/categories', CategoryManagement::class)->name('categories');
     Route::get('/foods', FoodManagement::class)->name('foods');
+    Route::get('/orders', OrderManagement::class)->name('orders');
 });

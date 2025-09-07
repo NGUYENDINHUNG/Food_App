@@ -38,7 +38,7 @@ class OrderSuccessComponent extends Component
 
     public function render()
     {
-        return view('livewire.client.orderSuccess.index', [
+        return view('client.orderSuccess.index', [
             'order' => $this->order
         ]);
     }

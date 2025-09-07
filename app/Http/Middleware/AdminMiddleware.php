@@ -17,8 +17,8 @@ class AdminMiddleware
         }
 
         if (Auth::user()->role !== 'Admin') {
-            abort(403, 'Bạn không có quyền truy cập');
             return redirect()->route('auth.login')->with('error', 'Vui lòng đăng nhập');
+            abort(403, 'Bạn không có quyền truy cập');
         }
 
         return $next($request);

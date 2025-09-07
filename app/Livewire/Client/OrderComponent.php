@@ -126,6 +126,6 @@ class OrderComponent extends Component
 
     public function render()
     {
-        return view('livewire.client.orders.index');
+        return view('client.orders.index');
     }
 }
