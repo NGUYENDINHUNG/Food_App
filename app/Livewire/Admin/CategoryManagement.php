@@ -38,9 +38,8 @@ class CategoryManagement extends Component
             'description' => $this->description,
         ];
 
-        $disk = config('filesystems.default');
         if ($this->image) {
-            $path = $this->image->storePublicly('categories', $disk);
+            $path = $this->image->store('categories', 'public');
             $data['image'] = $path; 
         } elseif ($this->editingId) {
             $data['image'] = $this->currentImage; 
@@ -60,18 +59,17 @@ class CategoryManagement extends Component
     public function delete($id)
     {
         $c = Category::findOrFail($id);
-        $disk = config('filesystems.default');
 
         $foods = Food::where('category_id', $id)->get();
         foreach ($foods as $food) {
             if ($food->image) {
-                Storage::disk($disk)->delete($food->image);
+                Storage::disk('public')->delete($food->image);
             }
             $food->delete();
         }
 
         if ($c->image) {
-            Storage::disk($disk)->delete($c->image);
+            Storage::disk('public')->delete($c->image);
         }
         $c->delete();
 

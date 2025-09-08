@@ -39,7 +39,7 @@ class OrderSuccessComponent extends Component
     public function render()
     {
         return view('client.orderSuccess.index', [
-            'order' => $this->order
-        ]);
+            'order' => $this->order,
+        ]);        
     }
 }

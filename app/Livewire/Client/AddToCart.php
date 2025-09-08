@@ -43,7 +43,8 @@ class AddToCart extends Component
 
             // Kiểm tra tồn kho cho tổng số lượng
             if ($this->food->quantity < $newQuantity) {
-                session()->flash('error', 'Không đủ hàng trong kho. Chỉ có thể thêm tối đa ' . ($this->food->quantity - $cartDetail->quantity) . ' sản phẩm nữa.');
+                session()->flash('error', 'Không đủ hàng trong kho. Chỉ có thể thêm tối đa '
+                 . ($this->food->quantity - $cartDetail->quantity) . ' sản phẩm nữa.');
                 return;
             }
 

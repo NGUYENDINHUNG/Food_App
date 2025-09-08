@@ -1,4 +1,3 @@
-@use('Illuminate\Support\Facades\Storage')
 @extends('layouts.client')
 @section('title', $category->name)
 

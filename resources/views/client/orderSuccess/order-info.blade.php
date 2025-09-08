@@ -1,4 +1,3 @@
-@use('Illuminate\Support\Facades\Storage')
 <!-- Order Summary Card -->
 <div class="card shadow-lg border-0 mb-4">
     <div class="card-header bg-primary text-white">

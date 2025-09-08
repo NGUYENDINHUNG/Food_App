@@ -1,4 +1,3 @@
-@use('Illuminate\Support\Facades\Storage')
 <div class="card shadow-sm border-0">
     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top">
         <h5 class="mb-0">

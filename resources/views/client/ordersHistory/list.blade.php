@@ -1,4 +1,3 @@
-@use('Illuminate\Support\Facades\Storage')
 @if ($orders->count() > 0)
     <div class="row">
         @foreach ($orders as $order)

@@ -29,9 +29,7 @@ class FoodManagement extends Component
     }
     public function save()
     {
-        $disk = config('filesystems.default');
         $this->validate();
-
 
         $data = [
             'name' => $this->name,
@@ -42,9 +40,8 @@ class FoodManagement extends Component
             'quantity' => $this->quantity,
         ];
 
-       
         if ($this->image) {
-            $path = $this->image->store('foods', $disk);
+            $path = $this->image->store('foods', 'public');
             $data['image'] = $path;
         } elseif ($this->editId) {
             $data['image'] = $this->currentImage;
@@ -72,9 +69,8 @@ class FoodManagement extends Component
                 session()->flash('error', 'Không thể xóa món ăn này vì đã có đơn hàng sử dụng. Vui lòng xóa các đơn hàng liên quan trước.');
                 return;
             }
-            $disk = config('filesystems.default');
             if ($food->image) {
-                Storage::disk($disk)->delete($food->image);
+                Storage::disk('public')->delete($food->image);
             }
 
             $food->delete();
