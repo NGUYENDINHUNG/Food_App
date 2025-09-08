@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Category;
+use App\Models\Food;
 use Livewire\Component;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -37,11 +38,12 @@ class CategoryManagement extends Component
             'description' => $this->description,
         ];
 
-         if ($this->image) {
-            $path = $this->image->store('categories', 'public');
-            $data['image'] = '/storage/' . $path;
+        $disk = config('filesystems.default');
+        if ($this->image) {
+            $path = $this->image->storePublicly('categories', $disk);
+            $data['image'] = $path; 
         } elseif ($this->editingId) {
-            $data['image'] = $this->currentImage;
+            $data['image'] = $this->currentImage; 
         }
 
         if ($this->editingId) {
@@ -51,7 +53,6 @@ class CategoryManagement extends Component
         }
 
         session()->flash('success', $this->editingId ? 'Cập nhật thành công!' : 'Tạo mới thành công!');
-
         $this->reset(['name', 'description', 'image', 'editingId', 'showModal']);
     }
 
@@ -59,9 +60,18 @@ class CategoryManagement extends Component
     public function delete($id)
     {
         $c = Category::findOrFail($id);
+        $disk = config('filesystems.default');
+
+        $foods = Food::where('category_id', $id)->get();
+        foreach ($foods as $food) {
+            if ($food->image) {
+                Storage::disk($disk)->delete($food->image);
+            }
+            $food->delete();
+        }
+
         if ($c->image) {
-            $filePath = str_replace('/storage/', '', $c->image);
-            Storage::disk('public')->delete($filePath);
+            Storage::disk($disk)->delete($c->image);
         }
         $c->delete();
 
@@ -80,7 +90,7 @@ class CategoryManagement extends Component
         $this->editingId = $id;
         $this->name = $category->name;
         $this->description = $category->description;
-        $this->currentImage = $category->image;
+        $this->currentImage = $category->image; 
         $this->image = null;
         $this->showModal = true;
     }

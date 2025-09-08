@@ -1,3 +1,4 @@
+@use('Illuminate\Support\Facades\Storage')
 <section class="py-5 bg-white">
     <div class="container">
         <div class="text-center mb-5">
@@ -10,7 +11,7 @@
                     <div class="category-card h-100 bg-white rounded-4 shadow-sm overflow-hidden border-0">
                         @if ($category->image)
                             <div class="category-image position-relative">
-                                <img src="{{ $category->image }}" alt="{{ $category->name }}" class="img-fluid w-100"
+                                <img src="{{ $category->image_url }}" alt="{{ $category->name }}" class="img-fluid w-100"
                                     style="height: 200px; object-fit: cover;">
                                 <div
                                     class="category-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">

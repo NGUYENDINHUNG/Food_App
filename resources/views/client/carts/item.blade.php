@@ -1,3 +1,4 @@
+@use('Illuminate\Support\Facades\Storage')
 <div class="card shadow-sm border-0">
     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top">
         <h5 class="mb-0">
@@ -25,7 +26,7 @@
                     @foreach ($cart->cartDetails as $item)
                         <tr>
                             <td>
-                                <img src="{{ $item->food->image }}" alt="{{ $item->food->name }}"
+                                <img src="{{ $item->food->image_url }}" alt="{{ $item->food->name }}"
                                     class="rounded shadow-sm" width="55" height="55" style="object-fit: cover;">
                             </td>
                             <td class="text-start">

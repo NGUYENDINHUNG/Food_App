@@ -1,3 +1,4 @@
+
 <table class="table table-hover align-middle">
     <thead>
         <tr>
@@ -13,7 +14,7 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $c->name }}</td>
                 <td>
-                    <img src="{{ $c->image }}" width="60" alt="{{ $c->name }}">
+                    <img src="{{ $c->image_url }}" width="60" alt="{{ $c->name }}">
                 </td>
                 <td class="text-end">
                     <button class="btn btn-outline-secondary btn-sm" wire:click="edit({{ $c->id }})">Sửa</button>
