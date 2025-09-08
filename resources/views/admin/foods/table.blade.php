@@ -21,7 +21,7 @@
                             <td>{{ $food->id }}</td>
                             <td>
                                 @if ($food->image)
-                                    <img src="{{ $food->image }}" alt="{{ $food->name }}" class="img-thumbnail"
+                                    <img src="{{ $food->image_url }}" alt="{{ $food->name }}" class="img-thumbnail"
                                         style="width: 60px; height: 60px; object-fit: cover;">
                                 @else
                                     <div class="bg-light d-flex align-items-center justify-content-center"

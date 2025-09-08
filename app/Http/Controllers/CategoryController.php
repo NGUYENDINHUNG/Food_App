@@ -26,7 +26,6 @@ class CategoryController extends Controller
             ->paginate(12)
             ->withQueryString()
             ->through(function ($c) {
-                $c->image_url = asset($c->image);
                 return $c;
             });
 
@@ -40,7 +39,6 @@ class CategoryController extends Controller
             ->paginate(12)
             ->withQueryString()
             ->through(function ($f) {
-                $f->image_url = asset($f->image);
                 return $f;
             });
 

@@ -1,3 +1,4 @@
+@use('Illuminate\Support\Facades\Storage')
 @extends('layouts.client')
 @section('title', 'Danh mục')
 
@@ -7,10 +8,11 @@
         @forelse($categories as $c)
             <div class="col-6 col-md-3">
                 <a class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden text-decoration-none text-dark 
-                          hover-shadow" 
-                   href="{{ route('categories.show', $c) }}">
+                          hover-shadow"
+                    href="{{ route('categories.show', $c) }}">
                     <div class="ratio ratio-4x3">
-                        <img src="{{ $c->image }}" class="card-img-top" alt="{{ $c->name }}" style="object-fit: cover;">
+                        <img src="{{ $c->image_url }}" class="card-img-top" alt="{{ $c->name }}"
+                            style="object-fit: cover;">
                     </div>
                     <div class="card-body text-center">
                         <div class="fw-semibold text-truncate" title="{{ $c->name }}">{{ $c->name }}</div>

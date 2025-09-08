@@ -1,3 +1,4 @@
+@use('Illuminate\Support\Facades\Storage')
 <!-- Order Summary Card -->
 <div class="card shadow-lg border-0 mb-4">
     <div class="card-header bg-primary text-white">
@@ -12,15 +13,15 @@
                 <h6 class="fw-bold text-primary mb-3">
                     <i class="fas fa-info-circle me-2"></i>Thông tin đơn hàng
                 </h6>
-                <div class="mb-2"><strong>Mã đơn hàng:</strong> 
+                <div class="mb-2"><strong>Mã đơn hàng:</strong>
                     <span class="badge bg-primary fs-6">#{{ $order->id }}</span>
                 </div>
                 <div class="mb-2"><strong>Ngày đặt:</strong> {{ $order->created_at->format('d/m/Y H:i') }}</div>
-                <div class="mb-2"><strong>Trạng thái:</strong> 
+                <div class="mb-2"><strong>Trạng thái:</strong>
                     <span class="badge bg-warning fs-6">Chờ xử lý</span>
                 </div>
                 <div class="mb-2"><strong>Phương thức thanh toán:</strong>
-                    @if($order->payment_method === 'cod')
+                    @if ($order->payment_method === 'cod')
                         <i class="fas fa-money-bill-wave text-success me-1"></i>Thanh toán khi nhận hàng
                     @else
                         <i class="fas fa-university text-primary me-1"></i>Chuyển khoản ngân hàng
@@ -32,7 +33,7 @@
                     <i class="fas fa-map-marker-alt me-2"></i>Địa chỉ giao hàng
                 </h6>
                 <p class="mb-0">{{ $order->shipping_address }}</p>
-                @if($order->note)
+                @if ($order->note)
                     <hr>
                     <h6 class="fw-bold text-primary mb-2">
                         <i class="fas fa-sticky-note me-2"></i>Ghi chú
@@ -61,23 +62,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($order->orderDetails as $detail)
+                    @foreach ($order->orderDetails as $detail)
                         <tr>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    @if($detail->food->image)
-                                        <img src="{{ $detail->food->image}}" 
-                                             class="rounded me-3" 
-                                             style="width: 50px; height: 50px; object-fit: cover;">
+                                    @if ($detail->food->image)
+                                        <img src="{{ $detail->food->image_url }}" class="rounded me-3"
+                                            style="width: 50px; height: 50px; object-fit: cover;">
                                     @else
                                         <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center"
-                                             style="width: 50px; height: 50px;">
+                                            style="width: 50px; height: 50px;">
                                             <i class="fas fa-utensils text-muted"></i>
                                         </div>
                                     @endif
                                     <div>
                                         <div class="fw-medium">{{ $detail->food->name }}</div>
-                                        @if($detail->note)
+                                        @if ($detail->note)
                                             <small class="text-muted">{{ $detail->note }}</small>
                                         @endif
                                     </div>

@@ -20,8 +20,8 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label">Ảnh danh mục 
-                                @if(!$editingId)
+                            <label class="form-label">Ảnh danh mục
+                                @if (!$editingId)
                                     <span class="text-danger">*</span>
                                 @else
                                     <small class="text-muted">(Để trống nếu không muốn thay đổi)</small>
@@ -32,7 +32,7 @@
                             @error('image')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            
+
                             {{-- Hiện ảnh cũ khi đang edit và chưa chọn ảnh mới --}}
                             @if ($currentImage && !$image)
                                 <div class="mt-2">
@@ -54,8 +54,7 @@
 
                         <div class="col-12">
                             <label class="form-label">Mô tả <span class="text-danger">*</span></label>
-                            <textarea class="form-control @error('description') is-invalid @enderror" 
-                                wire:model.defer="description" rows="3"
+                            <textarea class="form-control @error('description') is-invalid @enderror" wire:model.defer="description" rows="3"
                                 placeholder="Nhập mô tả danh mục"></textarea>
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -66,10 +65,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" wire:click="resetForm">Hủy</button>
-                <button type="button" class="btn btn-primary" wire:click="save">
+                <button type="submit" class="btn btn-primary" wire:click="save">
                     <i class="fas fa-save"></i> {{ $editingId ? 'Cập nhật' : 'Lưu' }}
                 </button>
             </div>
         </div>
     </div>
-</div>

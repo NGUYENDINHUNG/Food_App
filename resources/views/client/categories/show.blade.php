@@ -1,3 +1,4 @@
+@use('Illuminate\Support\Facades\Storage')
 @extends('layouts.client')
 @section('title', $category->name)
 
@@ -10,8 +11,8 @@
             <div class="col-6 col-md-3">
                 <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden">
                     <div class="ratio ratio-4x3">
-                        <img src="{{ $f->image }}" class="card-img-top" alt="{{ $f->name }}" 
-                             style="object-fit: cover;">
+                        <img src="{{ $f->image_url }}" class="card-img-top" alt="{{ $f->name }}"
+                            style="object-fit: cover;">
                     </div>
 
                     <div class="card-body d-flex flex-column">
